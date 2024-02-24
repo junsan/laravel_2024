@@ -17,7 +17,13 @@ class LoginController extends Controller
     {
         $user = User::where('email', $request->email)->first();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        // if (!$user || !Hash::check($request->password, $user->password)) {
+        //     throw  \Illuminate\Validation\ValidationException::withMessages([
+        //         'email' => ['The credentials you entered is incorrect.']
+        //     ]);
+        // }
+
+        if (!auth()->attempt($request->only('email', 'password'))) {
             throw  \Illuminate\Validation\ValidationException::withMessages([
                 'email' => ['The credentials you entered is incorrect.']
             ]);
